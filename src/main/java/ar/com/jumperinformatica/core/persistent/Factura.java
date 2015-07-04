@@ -1,23 +1,13 @@
 package ar.com.jumperinformatica.core.persistent;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import ar.com.jumperinformatica.core.enums.EstadoFactura;
 import ar.com.jumperinformatica.core.enums.TipoFactura;
@@ -41,9 +31,12 @@ public abstract class Factura implements Serializable{
 	private String numeroFactura;
 	private Integer numeroRemito;
 	private String obra;
-	private Float totalFactura=0f;
-	private Float subtotal=0f;
-	private Float totalIva=0f;
+	@Column(precision=12, scale=2)
+	private BigDecimal totalFactura = new BigDecimal(0);
+	@Column(precision=12, scale=2)
+	private BigDecimal subtotal = new BigDecimal(0);
+	@Column(precision=12, scale=2)
+	private BigDecimal totalIva = new BigDecimal(0);
 	
 	
 	@Enumerated(EnumType.STRING)
@@ -94,7 +87,7 @@ public abstract class Factura implements Serializable{
 		return tipoIva;
 	}
 
-	public Float getTotalFactura() {
+	public BigDecimal getTotalFactura() {
 		return totalFactura;
 	}
 
@@ -136,7 +129,7 @@ public abstract class Factura implements Serializable{
 		this.tipoIva = tipoIva;
 	}
 
-	public void setTotalFactura(Float pTotalFactura) {
+	public void setTotalFactura(BigDecimal pTotalFactura) {
 		this.totalFactura = pTotalFactura;
 	}
 
@@ -146,61 +139,55 @@ public abstract class Factura implements Serializable{
 	public void setComitente(Comitente comitente) {
 		this.comitente = comitente;
 	}
-	
-	public Float getSubtotal() {
+
+	public BigDecimal getSubtotal() {
 		return subtotal;
 	}
-	public void setSubtotal(Float subtotal) {
+
+	public void setSubtotal(BigDecimal subtotal) {
 		this.subtotal = subtotal;
 	}
-	
-	public Float getTotalIva() {
+
+	public BigDecimal getTotalIva() {
 		return totalIva;
 	}
-	public void setTotalIva(Float totalIva) {
+
+	public void setTotalIva(BigDecimal totalIva) {
 		this.totalIva = totalIva;
 	}
 
-	
 	/**
 	 * Calcula el total de la factura
 	 */
 	public void calcularTotal(){
-		System.out.println("Calcular total req = subtotal = "+this.subtotal+" total = "+this.totalIva);
-		if ((this.subtotal!=null) && (this.totalIva!=null)){
-			this.totalFactura = this.subtotal+this.totalIva;
-			this.totalFactura = FacturacionBean.redondearADosCifras(this.totalFactura);
-		}
-		else{
-			this.totalFactura = 0f;
-		}
+		totalFactura = (subtotal != null && totalIva != null) ?
+				subtotal.add(totalIva) :
+				new BigDecimal(0);
 	}
 	
 	public void calcularSubTotalDetalle() {
 		System.out.println("Calcular subtotal desde total requerido "+this.detalleFactura);
-		float locSubtotal = 0f;
+		BigDecimal subtotal = new BigDecimal(0);
 		for (DetalleFactura locDetalleFactura : this.detalleFactura){
-			locSubtotal+=locDetalleFactura.getTotal();
+			subtotal = subtotal.add(locDetalleFactura.getTotal());
 		}
-		this.subtotal = FacturacionBean.redondearADosCifras(locSubtotal);
-		//this.subtotal= locSubtotal;
-		
+		this.subtotal = subtotal.setScale(2, BigDecimal.ROUND_UP);
 	}
 	
 	public void calcularTotalIva(){
 		System.out.println("calcular totalIva req subtotal = "+this.subtotal+" tipoIva.porcentaje = "+((tipoIva!=null)?tipoIva.getPorcentaje():"sintipoiva"));
 		if ((this.subtotal!=null) && (this.tipoIva !=null)){
-			this.totalIva = this.getSubtotal()*(tipoIva.getPorcentaje()/100);
-			this.totalIva = FacturacionBean.redondearADosCifras(this.totalIva);
+			this.totalIva = getSubtotal().multiply(tipoIva.getPorcentaje().divide(new BigDecimal(100)));
+			totalIva.setScale(2, BigDecimal.ROUND_UP);
 		}
 		else{
-			this.totalIva = 0f;
+			this.totalIva = new BigDecimal(0);
 		}
 	}
 	
 	/**
 	 * Calcula el subtotal de la factura a partir del total
-	 */
+
 	public void calcularSubTotalDesdeTotal() {
 		System.out.println("calcular subtotal desde total requeridos totalFactura = "+this.totalFactura+" totalIva = "+this.totalIva);
 		if ((this.totalFactura!=null) && (this.totalIva!=null)){
@@ -210,7 +197,7 @@ public abstract class Factura implements Serializable{
 			this.subtotal = 0f;
 		}
 	}
-	
+*/
 	@Override
 	public String toString() {
 		String locSalida = (this.tipoFactura==null)?"":("Tipo "+this.tipoFactura.toString());

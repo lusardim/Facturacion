@@ -1,5 +1,6 @@
 package ar.com.jumperinformatica.gui.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
@@ -94,12 +95,14 @@ public class DetalleFacturaTableModel extends AbstractTableModel{
 			case 1: locDetalleFactura.setDescripcion(value.toString().trim()); break;
 			case 2: locDetalleFactura.setCantidad(Integer.valueOf(value.toString())); break;
 			case 3: {
-				Float valor = FacturacionBean.redondearADosCifras(value.toString());
+				BigDecimal valor = new BigDecimal(value.toString());
+				valor.setScale(2);
 				locDetalleFactura.setPrecio(valor); 
 				break;
 			}
 			case 4: {
-				Float valor = FacturacionBean.redondearADosCifras(value.toString());
+				BigDecimal valor = new BigDecimal(value.toString());
+				valor.setScale(2);
 				locDetalleFactura.setTotal(valor); 
 				break;
 			}

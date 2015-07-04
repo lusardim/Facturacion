@@ -1,17 +1,5 @@
 package ar.com.jumperinformatica.gui.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-
 import ar.com.jumperinformatica.core.exceptions.LogicaException;
 import ar.com.jumperinformatica.core.persistent.Comitente;
 import ar.com.jumperinformatica.core.persistent.Factura;
@@ -24,6 +12,17 @@ import ar.com.jumperinformatica.gui.model.PeriodoComboBoxModel;
 import ar.com.jumperinformatica.gui.model.ReporteComitente;
 import ar.com.jumperinformatica.gui.view.ReporteComitenteView;
 import ar.com.jumperinformatica.impresion.GestorImpresion;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ReporteComitenteController implements AMController {
 	private ReporteComitenteView vista;
@@ -119,22 +118,22 @@ public class ReporteComitenteController implements AMController {
 		locParametros.put("P_fechaDesde", new Timestamp(this.modelo.getFechaDesde().getTime()));
 		locParametros.put("P_fechaHasta", new Timestamp(this.modelo.getFechaHasta().getTime()));
 		locParametros.put("P_idComitente", this.modelo.getComitente().getIdComitente());
-		Float totalIva = 0f;
-		Float subTotal = 0f;
-		Float total = 0f;
+		BigDecimal totalIva = new BigDecimal(0);
+		BigDecimal subTotal = new BigDecimal(0);
+		BigDecimal total = new BigDecimal(0);
 		List<Factura> locFacturacion = this.comitenteBean
 									.getFacturacionComitente(this.modelo.getComitente(), 
 										this.modelo.getFechaDesde(), 
 										this.modelo.getFechaHasta());
 		
 		for (Factura cadaFactura : locFacturacion){
-			totalIva += cadaFactura.getTotalIva();
-			subTotal += cadaFactura.getSubtotal();
-			total +=cadaFactura.getTotalFactura();
+			totalIva = totalIva.add(cadaFactura.getTotalIva());
+			subTotal = subTotal.add(cadaFactura.getSubtotal());
+			total = total.add(cadaFactura.getTotalFactura());
 		}
-		locParametros.put("P_totalIva", totalIva);
-		locParametros.put("P_subtotal", subTotal);
-		locParametros.put("P_total", total);
+		locParametros.put("P_totalIva", totalIva.floatValue());
+		locParametros.put("P_subtotal", subTotal.floatValue());
+		locParametros.put("P_total", total.floatValue());
 		return locParametros;
 	}
 

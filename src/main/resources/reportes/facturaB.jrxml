@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="facturaB"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+	<reportFont name="facturaA" isDefault="true" fontName="Arial" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
+
+	<parameter name="P_idFactura" isForPrompting="false" class="java.lang.Long"/>
+	<queryString><![CDATA[SELECT * FROM factura LEFT JOIN (detallefactura, comitente, tipo_iva) ON (factura.idFactura = detallefactura.factura_idFactura AND factura.comitente_idComitente = comitente.idComitente AND 
+factura.tipoIva_idTipoIva = tipo_iva.idTipoIva) WHERE factura.idFactura=$P{P_idFactura}]]></queryString>
+
+	<field name="DTYPE" class="java.lang.String"/>
+	<field name="idFactura" class="java.lang.Long"/>
+	<field name="condicionVenta" class="java.lang.String"/>
+	<field name="estadoFactura" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="numeroFactura" class="java.lang.String"/>
+	<field name="numeroRemito" class="java.lang.Integer"/>
+	<field name="obra" class="java.lang.String"/>
+	<field name="tipoFactura" class="java.lang.String"/>
+	<field name="totalFactura" class="java.lang.Float"/>
+	<field name="tipoIva_idTipoIva" class="java.lang.Long"/>
+	<field name="comitente_idComitente" class="java.lang.Long"/>
+	<field name="totalIva" class="java.lang.Float"/>
+	<field name="subtotal" class="java.lang.Float"/>
+	<field name="idDetalleFactura" class="java.lang.Long"/>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="item" class="java.lang.Integer"/>
+	<field name="precio" class="java.lang.Float"/>
+	<field name="total" class="java.lang.Float"/>
+	<field name="factura_idFactura" class="java.lang.Long"/>
+	<field name="idComitente" class="java.lang.Long"/>
+	<field name="cuit" class="java.lang.String"/>
+	<field name="domicilio" class="java.lang.String"/>
+	<field name="estadoComitente" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="idTipoIva" class="java.lang.Long"/>
+	<field name="descripcionIva" class="java.lang.String"/>
+	<field name="porcentaje" class="java.lang.Float"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="264"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="430"
+						y="91"
+						width="73"
+						height="16"
+						key="textField-1"/>
+					<box></box>
+					<textElement>
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.sql.Timestamp"><![CDATA[$F{fecha}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="78"
+						y="153"
+						width="229"
+						height="18"
+						key="textField-2"/>
+					<box></box>
+					<textElement>
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="78"
+						y="179"
+						width="439"
+						height="16"
+						key="textField-3"/>
+					<box></box>
+					<textElement>
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{domicilio}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="352"
+						y="153"
+						width="159"
+						height="18"
+						key="textField-4"/>
+					<box></box>
+					<textElement>
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cuit}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="78"
+						y="207"
+						width="216"
+						height="19"
+						key="textField-5"/>
+					<box></box>
+					<textElement>
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{descripcionIva}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="352"
+						y="207"
+						width="165"
+						height="19"
+						key="textField-6"/>
+					<box></box>
+					<textElement>
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{numeroRemito}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="78"
+						y="234"
+						width="216"
+						height="18"
+						key="textField-7"/>
+					<box></box>
+					<textElement>
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{condicionVenta}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="352"
+						y="234"
+						width="165"
+						height="18"
+						key="textField-8"/>
+					<box></box>
+					<textElement>
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{obra}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="27"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="19"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="13"
+						y="1"
+						width="23"
+						height="15"
+						key="textField-9"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{item}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="47"
+						y="1"
+						width="237"
+						height="15"
+						key="textField-10"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{descripcion}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="294"
+						y="1"
+						width="48"
+						height="15"
+						key="textField-11"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{cantidad}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="365"
+						y="1"
+						width="72"
+						height="15"
+						key="textField-12"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Float"><![CDATA[$F{precio}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="452"
+						y="1"
+						width="73"
+						height="16"
+						key="textField-13"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Float"><![CDATA[$F{total}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="90"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="true" pattern="¤ #,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="467"
+						y="9"
+						width="63"
+						height="18"
+						key="textField-17"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font reportFont="facturaA" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Float"><![CDATA[$F{totalFactura}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

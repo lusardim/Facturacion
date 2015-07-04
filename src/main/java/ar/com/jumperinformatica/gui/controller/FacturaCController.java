@@ -2,6 +2,7 @@ package ar.com.jumperinformatica.gui.controller;
 
 import java.awt.Dialog;
 import java.awt.event.FocusListener;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -78,7 +79,7 @@ public class FacturaCController extends FacturaController {
 		String numeroFactura = null;
 		Integer numeroRemito = null;
 		String obra  = null;
-		Float totalFactura  = null;
+		BigDecimal totalFactura  = null;
 		TipoIva tipoIva = null;
 	
 		NumberFormat locFormato = NumberFormat.getNumberInstance();
@@ -112,7 +113,7 @@ public class FacturaCController extends FacturaController {
 		
 		if (!this.vista.getTfTotal().getText().isEmpty()){
 			try{
-				totalFactura = locFormato.parse(this.vista.getTfTotal().getText()).floatValue();
+				totalFactura = (BigDecimal)locFormato.parse(this.vista.getTfTotal().getText());
 			} catch (ParseException e) {
 				e.printStackTrace();
 				throw new LogicaException("El total de la factura debe ser un número válido");

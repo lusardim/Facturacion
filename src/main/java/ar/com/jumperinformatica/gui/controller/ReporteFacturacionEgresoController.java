@@ -96,7 +96,6 @@ public class ReporteFacturacionEgresoController extends ReporteFacturacionContro
 				
 				locListaParametros.putAll(cadaReporte.getListaParametros());
 			}
-			System.out.println(locListaParametros);
 			return locListaParametros;
 		}
 		catch(Exception e){

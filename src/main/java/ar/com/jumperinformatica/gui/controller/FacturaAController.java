@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -71,12 +73,13 @@ public class FacturaAController extends FacturaController implements AMControlle
 		String numeroFactura = null;
 		Integer numeroRemito = null;
 		String obra  = null;
-		Float totalFactura  = null;
-		Float subtotal = null;
-		Float totalIva = null;
+		BigDecimal totalFactura  = null;
+		BigDecimal subtotal = null;
+		BigDecimal totalIva = null;
 		TipoIva tipoIva = null;
 	
-		NumberFormat locFormato = NumberFormat.getNumberInstance();
+		DecimalFormat locFormato = (DecimalFormat)DecimalFormat.getNumberInstance();
+		locFormato.setParseBigDecimal(true);
 		if (!this.vista.getTfCondicionVenta().getText().trim().isEmpty()){
 			condicionVenta = this.vista.getTfCondicionVenta().getText().trim();
 		}
@@ -107,7 +110,7 @@ public class FacturaAController extends FacturaController implements AMControlle
 		
 		if (!this.vista.getTfTotal().getText().isEmpty()){
 			try{
-				totalFactura = locFormato.parse(this.vista.getTfTotal().getText()).floatValue();
+				totalFactura = (BigDecimal)locFormato.parse(this.vista.getTfTotal().getText());
 			} catch (ParseException e) {
 				e.printStackTrace();
 				throw new LogicaException("El total de la factura debe ser un número válido");
@@ -115,7 +118,7 @@ public class FacturaAController extends FacturaController implements AMControlle
 		}
 		if (!this.vista.getTfSubtotal().getText().isEmpty()){
 			try{
-				subtotal = locFormato.parse(this.vista.getTfSubtotal().getText()).floatValue();
+				subtotal = (BigDecimal)locFormato.parse(this.vista.getTfSubtotal().getText());
 			}
 			catch(ParseException e){
 				e.printStackTrace();
@@ -125,7 +128,7 @@ public class FacturaAController extends FacturaController implements AMControlle
 		
 		if (!this.vista.getTfTotalIva().getText().isEmpty()){
 			try{
-				totalIva = locFormato.parse(this.vista.getTfTotalIva().getText()).floatValue();
+				totalIva = (BigDecimal)locFormato.parse(this.vista.getTfTotalIva().getText());
 			}
 			catch(ParseException e){
 				e.printStackTrace();
