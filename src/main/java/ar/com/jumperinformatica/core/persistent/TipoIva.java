@@ -1,13 +1,9 @@
 package ar.com.jumperinformatica.core.persistent;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="tipo_iva")
@@ -22,7 +18,8 @@ public class TipoIva implements Serializable{
 	@Basic(optional=false)
 	private String descripcionIva;
 	@Basic(optional=false)
-	private Float porcentaje;
+	@Column(nullable = false, columnDefinition = "float")
+	private BigDecimal porcentaje;
 	
 	public Long getIdTipoIva() {
 		return idTipoIva;
@@ -37,10 +34,10 @@ public class TipoIva implements Serializable{
 	public void setDescripcionIva(String descripcionIva) {
 		this.descripcionIva = descripcionIva;
 	}
-	public Float getPorcentaje() {
+	public BigDecimal getPorcentaje() {
 		return porcentaje;
 	}
-	public void setPorcentaje(Float porcentaje) {
+	public void setPorcentaje(BigDecimal porcentaje) {
 		this.porcentaje = porcentaje;
 	}
 	

@@ -1,14 +1,11 @@
 package ar.com.jumperinformatica.core.persistent;
 
-import java.sql.Connection;
+import ar.com.jumperinformatica.core.exceptions.LogicaException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-
-import org.hibernate.ejb.EntityManagerImpl;
-
-import ar.com.jumperinformatica.core.exceptions.LogicaException;
+import java.sql.Connection;
 
 public class GestorPersistencia {
 	private EntityManagerFactory fabrica;
@@ -69,11 +66,11 @@ public class GestorPersistencia {
 	}
 	
 	
-	@SuppressWarnings("deprecation")
+	/*@SuppressWarnings("deprecation")
 	public Connection getConnection(){
 		if (this.fabrica.isOpen()){
 			return ((EntityManagerImpl)this.fabrica.createEntityManager()).getSession().connection();
 		}
 		return null;
-	}
+	}*/
 }

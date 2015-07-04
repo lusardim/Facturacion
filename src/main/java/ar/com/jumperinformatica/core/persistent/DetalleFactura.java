@@ -1,6 +1,7 @@
 package ar.com.jumperinformatica.core.persistent;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -23,10 +24,10 @@ public class DetalleFactura implements Serializable{
 	private Integer item;
 	
 	@Basic(optional=true)
-	private String descripcion="";
-	private Integer cantidad=1;
-	private Float precio=0f;
-	private Float total;
+	private String descripcion = "";
+	private Integer cantidad = 1;
+	private BigDecimal precio = new BigDecimal(0);
+	private BigDecimal total;
 	
 	@ManyToOne(optional=false)
 	private Factura factura;
@@ -68,30 +69,34 @@ public class DetalleFactura implements Serializable{
 		this.calcularTotal();
 	}
 	
-	public Float getPrecio() {
+	public BigDecimal getPrecio() {
 		return precio;
 	}
-	public void setPrecio(Float precio) {
+	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
 		this.calcularTotal();
 	}
 
-	public Float getTotal(){
+	public BigDecimal getTotal(){
 		if (this.total==null){
 			this.calcularTotal();
 		}
 		return this.total;
 	}
 	
-	public void setTotal(Float pTotal){
-		this.total=pTotal;	
-		if (!this.total.equals(this.getCantidad()* this.getPrecio())){
-			this.setPrecio(this.getTotal()/this.getCantidad());
+	public void setTotal(BigDecimal pTotal){
+		this.total=pTotal;
+		BigDecimal cantidad = new BigDecimal(this.cantidad);
+		BigDecimal total = precio.multiply(cantidad);
+
+		if (!this.total.equals(total)){
+			this.setPrecio(this.getTotal().divide(cantidad));
 		}
 	}
 	
 	private void calcularTotal() {
-		this.setTotal(this.getCantidad()*this.getPrecio());
+		BigDecimal cantidad = new BigDecimal(this.cantidad);
+		this.setTotal(cantidad.multiply(precio));
 	}
 
 }

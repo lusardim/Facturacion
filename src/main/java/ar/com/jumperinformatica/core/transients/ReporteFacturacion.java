@@ -1,21 +1,22 @@
 package ar.com.jumperinformatica.core.transients;
 
+import ar.com.jumperinformatica.core.enums.TipoFactura;
+
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ar.com.jumperinformatica.core.enums.TipoFactura;
-
 public class ReporteFacturacion {
 	private String dtype;
 	private String periodo;
 	private Timestamp fechaDesde;
 	private Timestamp fechaHasta;
-	private Float totalIva;
-	private Float subtotal;
-	private Float total;
+	private BigDecimal totalIva;
+	private BigDecimal subtotal;
+	private BigDecimal total;
 	private TipoFactura tipoFactura;
 	
 	public TipoFactura getTipoFactura() {
@@ -29,10 +30,10 @@ public class ReporteFacturacion {
 	public ReporteFacturacion(){
 	}
 	
-	public ReporteFacturacion(Double subtotal, Double totalIva,Double total){
-		this.total = (total!=null)?total.floatValue():0;
-		this.totalIva = (totalIva!=null)?totalIva.floatValue():0;
-		this.subtotal = (subtotal!=null)?subtotal.floatValue():0;
+	public ReporteFacturacion(BigDecimal subtotal, BigDecimal totalIva,BigDecimal total) {
+		this.total = total;
+		this.totalIva = totalIva;
+		this.subtotal = subtotal;
 	}
 	
 	public String getDtype() {
@@ -74,35 +75,39 @@ public class ReporteFacturacion {
 	public void setFechaHasta(Timestamp fechaHasta) {
 		this.fechaHasta = fechaHasta;
 	}
-	public Float getTotalIva() {
+	public BigDecimal getTotalIva() {
 		return totalIva;
 	}
-	public void setTotalIva(Float totalIva) {
+	public void setTotalIva(BigDecimal totalIva) {
 		this.totalIva = totalIva;
 	}
-	public Float getSubtotal() {
+	public BigDecimal getSubtotal() {
 		return subtotal;
 	}
-	public void setSubtotal(Float subtotal) {
+	public void setSubtotal(BigDecimal subtotal) {
 		this.subtotal = subtotal;
 	}
-	public Float getTotal() {
+	public BigDecimal getTotal() {
 		return total;
 	}
-	public void setTotal(Float total) {
+	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
 	
 	public Map<String,Object> getListaParametros(){
+		getTotal().setScale(2);
+		getSubtotal().setScale(2);
+		getTotalIva().setScale(2);
+
 		Map<String,Object> listaParametros = new HashMap<String, Object>();
 		
 		listaParametros.put("P_DTYPE", this.getDtype());
 		listaParametros.put("P_periodo", this.getPeriodo());
 		listaParametros.put("P_fechaDesde", this.getFechaDesde());
 		listaParametros.put("P_fechaHasta", this.getFechaHasta());
-		listaParametros.put("P_totalIva", this.getTotalIva());
-		listaParametros.put("P_subtotal", this.getSubtotal());
-		listaParametros.put("P_total", this.getTotal());
+		listaParametros.put("P_totalIva", this.getTotalIva().floatValue());
+		listaParametros.put("P_subtotal", this.getSubtotal().floatValue());
+		listaParametros.put("P_total", this.getTotal().floatValue());
 		
 		String locTipoFactura=null;
 		if (this.tipoFactura != null){
